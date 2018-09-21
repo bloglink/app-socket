@@ -38,49 +38,43 @@ class AppSocket : public QMainWindow
 
 public:
     explicit AppSocket(QWidget *parent = 0);
-    ~AppSocket();
 private slots:
     void initUI();
-    void initSkin();
     void initTitle();
     void initLayout();
-    void initRecvBar();
-    void initSendBar();
+    void initRecvText();
+    void initRecvPort();
+    void initSendView();
     void initSettings();
     void saveSettings();
     void openSocketDev();
-    void recvSocketDev();
+    void sendSocketDat();
     void sendSocketDev();
-    void sendCurrentText();
-    void sendCurrentList();
-    void stopCurrentLoop();
-    void sendCurrentByte(QByteArray msg);
+    void recvSocketDev();
+    void sendSocketMsg(QByteArray msg);
     void display(QByteArray msg);
-    void appendCurrentItem();
-    void deleteCurrentItem();
-    void updateCurrentItem(int r, int c);
+    QByteArray crc16(QByteArray msg);
+    virtual void showEvent(QShowEvent *e);
     virtual void hideEvent(QHideEvent *e);
 private:
-    QGridLayout *layout;
-    QTextEdit *textUdpRecv;
-    QComboBox *boxHostAddr;
-    QComboBox *boxHostPort;
-    QCheckBox *boxAutoSpace;
-    QCheckBox *boxGetToHEX;
-    QLineEdit *textPutTime;
-    QLineEdit *textPutRate;
-    QCheckBox *boxLoopSend;
-    QCheckBox *boxPutToHEX;
-    QLineEdit *textUdpSend;
-    QTableWidget *tabList;
-
-    QStringList tabTexts;
-    QStringList tabNotes;
+    QHBoxLayout *toplayout;
+    QHBoxLayout *lowlayout;
+    QTextEdit *textRecv;
+    QLineEdit *textAddr;
+    QLineEdit *textPort;
+    QCheckBox *boxSpace;
+    QCheckBox *boxHex16;
+    QCheckBox *boxCrc16;
+    QCheckBox *boxEnter;
+    QList<QLineEdit*> boxSender;
+    QList<QPushButton*> btnSender;
+    QList<QLineEdit*> boxReturn;
+    QList<QLineEdit*> boxDelays;
+    QMap<int, int> wait;
+    QMap<int, int> isRecv;
 
     QUdpSocket *udp;
     QTimer *timer;
-    int timeOut;
-    int sendOut;
     quint16 recvPort;
     QHostAddress recvAddr;
     QByteArray tmpByte;
